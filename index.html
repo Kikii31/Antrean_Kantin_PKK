@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#d94343" />
+    <title>Aplikasi Antrean Kantin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script src="assets/js/app.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">R</div>
+        <div>
+          <h1>Antrean Kantin</h1>
+          <p>Sistem pemesanan sederhana</p>
+        </div>
+      </div>
+      <div class="top-meta">
+        <div class="clock">
+          <strong id="clock">--:--</strong
+          ><span id="today">Memuat tanggal...</span>
+        </div>
+        <div class="top-dot" aria-hidden="true">↗</div>
+      </div>
+    </header>
+
+    <main class="shell">
+      <div class="dashboard">
+        <aside class="side-column">
+          <div class="store-card">
+            <div class="store-icon">▣</div>
+            <div>
+              <strong>Kantin Sekolah</strong
+              ><small>Layanan antrean pesanan</small>
+            </div>
+          </div>
+          <div class="notice">
+            <b>!</b
+            ><span
+              >Masukkan pesanan dengan benar, lalu perbarui status saat pesanan
+              diproses.</span
+            >
+          </div>
+          <div class="shift-card">
+            <div>
+              <div class="shift-icon">▣</div>
+              <strong>Atur antrean kantin</strong>
+              <p>Catat pesanan agar pelayanan lebih tertib.</p>
+            </div>
+            <button type="button" data-scroll="new-order">Buat Pesanan</button>
+          </div>
+          <div class="section-label">Ringkasan Hari Ini</div>
+          <div class="summary-grid" id="summary">
+            <div class="summary-card green">
+              <div class="summary-symbol">▤</div>
+              <div>
+                <span>Total Pesanan</span><strong id="total-orders">0</strong
+                ><small>Hari ini</small>
+              </div>
+            </div>
+            <div class="summary-card orange">
+              <div class="summary-symbol">◷</div>
+              <div>
+                <span>Menunggu</span><strong id="waiting-orders">0</strong
+                ><small>Antrean</small>
+              </div>
+            </div>
+            <div class="summary-card blue">
+              <div class="summary-symbol">↻</div>
+              <div>
+                <span>Diproses</span><strong id="processing-orders">0</strong
+                ><small>Pesanan</small>
+              </div>
+            </div>
+            <div class="summary-card red">
+              <div class="summary-symbol">✓</div>
+              <div>
+                <span>Siap Diambil</span><strong id="ready-orders">0</strong
+                ><small>Pesanan</small>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <section class="main-column">
+          <div class="menu-area">
+            <div class="menu-heading">Menu Utama</div>
+            <div class="menu-grid">
+              <button class="menu-tile" type="button" data-scroll="new-order">
+                <span class="menu-icon c-green">＋</span
+                ><span>Pesanan Baru</span>
+              </button>
+              <button class="menu-tile" type="button" data-scroll="queue-panel">
+                <span class="menu-icon c-orange">▤</span
+                ><span>Daftar Antrean</span>
+              </button>
+              <button class="menu-tile" type="button" data-filter="Menunggu">
+                <span class="menu-icon c-pink">◷</span><span>Menunggu</span>
+              </button>
+              <button
+                class="menu-tile"
+                type="button"
+                data-filter="Siap diambil"
+              >
+                <span class="menu-icon c-blue">✓</span><span>Siap Diambil</span>
+              </button>
+            </div>
+          </div>
+
+          <section class="panel" id="new-order">
+            <div class="panel-title">
+              <div>
+                <h2>Buat Pesanan Baru</h2>
+                <span class="subtle"
+                  >Nomor antrean dibuat otomatis oleh database</span
+                >
+              </div>
+              <span class="pill">ANTREAN AKTIF</span>
+            </div>
+            <form id="order-form" class="order-form">
+              <div class="field">
+                <label for="customer-name">Nama pemesan</label
+                ><input
+                  id="customer-name"
+                  maxlength="80"
+                  required
+                  placeholder="Contoh: Andi"
+                />
+              </div>
+              <div class="field field-wide">
+                <label for="order-details">Pesanan</label
+                ><textarea
+                  id="order-details"
+                  maxlength="500"
+                  required
+                  rows="3"
+                  placeholder="Contoh: 1 nasi goreng, 1 es teh manis"
+                ></textarea>
+              </div>
+              <div class="form-actions">
+                <button class="btn btn-red" id="create-order" type="submit">
+                  Tambah ke Antrean</button
+                ><button class="btn btn-light" type="reset">Bersihkan</button>
+              </div>
+            </form>
+            <div
+              class="new-queue-result"
+              id="new-queue-result"
+              aria-live="polite"
+            ></div>
+          </section>
+
+          <section class="panel" id="queue-panel">
+            <div class="panel-title">
+              <div>
+                <h2>Daftar Antrean</h2>
+                <span class="subtle"
+                  >Ubah status pesanan sesuai proses pelayanan</span
+                >
+              </div>
+              <button class="btn btn-light" id="refresh-data" type="button">
+                Muat ulang
+              </button>
+            </div>
+            <div class="queue-toolbar">
+              <input
+                class="search"
+                id="search"
+                type="search"
+                placeholder="Cari nomor antrean, nama, atau pesanan..."
+                aria-label="Cari antrean"
+              />
+              <select
+                id="status-filter"
+                class="filter-select"
+                aria-label="Filter status"
+              >
+                <option value="Semua">Semua Status</option>
+                <option value="Menunggu">Menunggu</option>
+                <option value="Diproses">Diproses</option>
+                <option value="Siap diambil">Siap Diambil</option>
+                <option value="Selesai">Selesai</option>
+              </select>
+            </div>
+            <div class="queue-list" id="queue-list">
+              <div class="queue-empty">Menghubungkan ke database...</div>
+            </div>
+          </section>
+        </section>
+      </div>
+      <footer class="foot">
+        Antrean Kantin · HTML, CSS, JavaScript, PHP &amp; MySQL
+      </footer>
+    </main>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
